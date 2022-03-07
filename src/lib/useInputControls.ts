@@ -1,7 +1,8 @@
-import type { FormContext, InputError } from "./types";
+import type { FormContext, InputError } from "../api/types";
 
 
-export function useInputControls(formContext: FormContext, inputId: string){
+export default function useInputControls(formContext: FormContext, inputId: string){
+
   let inputValue: unknown = "";
   let inputError: InputError;
 
@@ -11,6 +12,7 @@ export function useInputControls(formContext: FormContext, inputId: string){
   formContext.inputErrorsStore.subscribe((errors) => {
     inputError = errors[inputId];
   });
+
 
   function onChange(
     e: Event & { currentTarget: EventTarget & HTMLInputElement }

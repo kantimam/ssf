@@ -1,30 +1,16 @@
 <script lang="ts">
   import type { ElementDefinition } from "src/api/types";
-  export let elementDefinition: ElementDefinition;
-  import type { FormContext, InputError } from "src/api/types";
   import { getContext } from "svelte";
+  import useInputControls from "../useInputControls";
 
+  export let elementDefinition: ElementDefinition;
   let identifier = elementDefinition.identifier;
 
-  let inputValue: unknown = "test";
-  let inputError: InputError;
+  let { inputValue, inputError, onChange, updateValue, updateError } =
+    useInputControls(getContext("formContext"), identifier);
 
-  const formContext: FormContext = getContext("formContext");
-  formContext.inputValuesStore.subscribe((values) => {
-    inputValue = values[identifier] || "";
-  });
-  formContext.inputErrorsStore.subscribe((errors) => {
-    inputError = errors[identifier];
-  });
-
-  function onChange(
-    e: Event & { currentTarget: EventTarget & HTMLInputElement }
-  ): void {
-    formContext.setInputValue(identifier, (e.target as HTMLInputElement).value);
-  }
-  function updateError(errorObject: InputError) {
-    formContext.setInputError(identifier, errorObject);
-  }
+  //$: val = inputValue;
+  //$: error = inputError;
 </script>
 
 <div class="text-input">
@@ -44,4 +30,5 @@
   {#if inputError?.message}
     <div class="info-bottom">{inputError.message}</div>
   {/if}
+  <div>value: {inputValue}</div>
 </div>
