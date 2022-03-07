@@ -1,0 +1,548 @@
+import type { SvelteComponent } from "svelte";
+
+export type ElementsMap=Record<string, typeof SvelteComponent>;
+
+export interface FormContext {
+    inputValuesStore: SvelteStore<Record<string, unknown>>;
+    inputErrorsStore: SvelteStore<Record<string, unknown>>;
+    setInputValue: (key: string, value: unknown)=>void;
+    setInputError: (key: string, value: InputError)=>void;
+}
+
+export interface InputError  {
+    message:  string,
+    type: string
+}
+
+export interface FormDefinitionTypo3 {
+    id: string;
+    api: Typo3FormApi;
+    global: unknown;
+    action: string;
+    i18n: string;
+    elements: ElementDefinition[];
+
+}
+export interface PageDefinition {
+    current: number;
+    nextPage: number | null;
+    pages: number;
+    labels: Record<string, string>,
+    errorHint: string;
+    pageSummaryText: string | null,
+    submitButtonAlignment?: string
+}
+
+export interface Typo3FormApi {
+    status: string | null;
+    errors: string[] | null;
+    callbacks: unknown[];
+    preprocess: unknown[];
+    actionAfterSuccess: unknown;
+    page: PageDefinition;
+}
+
+
+export interface ElementDefinition {
+    defaultValue?: string | unknown
+    type?: string
+    identifier?: string
+    label?: string
+    name?: string
+    renderingOptions?: unknown[]
+    validators?: InputValidator[]
+    properties?: unknown
+}
+
+export interface InputValidator {
+    options?: Record<string, unknown>
+    identifier: string
+    code?: number
+    errorMessage?: string | number 
+
+}
+
+export interface ElemenetProperties{
+    "properties": {
+        "fluidAdditionalAttributes": {
+            "required": "required",
+            "minlength": "2",
+            "maxlength": "40"
+        },
+        "validationErrorMessages": [
+            {
+                "code": 1221560910,
+                "message": "Bitte geben Sie Ihren Namen ein"
+            },
+            {
+                "code": 1221560718,
+                "message": "Bitte geben Sie Ihren Namen ein"
+            },
+            {
+                "code": 1347992400,
+                "message": "Bitte geben Sie Ihren Namen ein"
+            },
+            {
+                "code": 1347992453,
+                "message": "Bitte geben Sie Ihren Namen ein"
+            },
+            {
+                "code": 1238110957,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            },
+            {
+                "code": 1269883975,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            },
+            {
+                "code": 1428504122,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            },
+            {
+                "code": 1238108068,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            },
+            {
+                "code": 1238108069,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            }
+        ]
+    },
+
+}
+
+/*
+export interface ElementDefinition {
+    defaultValue?: string,
+    type: string,
+    identifier: string,
+    label?: string,
+    "properties": {
+        "fluidAdditionalAttributes": {
+            "required": "required",
+            "minlength": "2",
+            "maxlength": "40"
+        },
+        "validationErrorMessages": [
+            {
+                "code": 1221560910,
+                "message": "Bitte geben Sie Ihren Namen ein"
+            },
+            {
+                "code": 1221560718,
+                "message": "Bitte geben Sie Ihren Namen ein"
+            },
+            {
+                "code": 1347992400,
+                "message": "Bitte geben Sie Ihren Namen ein"
+            },
+            {
+                "code": 1347992453,
+                "message": "Bitte geben Sie Ihren Namen ein"
+            },
+            {
+                "code": 1238110957,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            },
+            {
+                "code": 1269883975,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            },
+            {
+                "code": 1428504122,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            },
+            {
+                "code": 1238108068,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            },
+            {
+                "code": 1238108069,
+                "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+            }
+        ]
+    },
+    "renderingOptions": [],
+    "validators": [
+        {
+            "identifier": "NotEmpty",
+            "code": 1221560910,
+            "errorMessage": "Bitte geben Sie Ihren Namen ein"
+        },
+        {
+            "options": {
+                "minimum": "2",
+                "maximum": "40"
+            },
+            "identifier": "StringLength",
+            "code": 1428504122,
+            "errorMessage": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+        }
+    ],
+    "name": "tx_form_formframework[contact-19915][name]"
+}
+*/
+
+/*
+export const formDefinitionExample: FormDefinitionTypo3={
+        "id": "contact-19915",
+        "api": {
+            "status": null,
+            "errors": null,
+            "callbacks": [],
+            "preprocess": [],
+            "actionAfterSuccess": null,
+            "page": {
+                "current": 1,
+                "nextPage": null,
+                "pages": 1,
+                "labels": {
+                    "nextButtonLabel": "Übermitteln"
+                },
+                "errorHint": "Bitte prüfen Sie %s Felder",
+                "pageSummaryText": null,
+                "submitButtonAlignment": "left"
+            }
+        },
+        "global": {
+            "labels": {
+                "error": "Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es später erneut. Wenn der Fehler bestehen bleibt, kontaktieren Sie uns bitte."
+            }
+        },
+        "action": "https://dev.bph.onl/kontakt/send/#contact-19915",
+        "i18n": "de-DE",
+        "elements": [
+            {
+                "defaultValue": "",
+                "type": "Text",
+                "identifier": "name",
+                "label": "Name",
+                "properties": {
+                    "fluidAdditionalAttributes": {
+                        "required": "required",
+                        "minlength": "2",
+                        "maxlength": "40"
+                    },
+                    "validationErrorMessages": [
+                        {
+                            "code": 1221560910,
+                            "message": "Bitte geben Sie Ihren Namen ein"
+                        },
+                        {
+                            "code": 1221560718,
+                            "message": "Bitte geben Sie Ihren Namen ein"
+                        },
+                        {
+                            "code": 1347992400,
+                            "message": "Bitte geben Sie Ihren Namen ein"
+                        },
+                        {
+                            "code": 1347992453,
+                            "message": "Bitte geben Sie Ihren Namen ein"
+                        },
+                        {
+                            "code": 1238110957,
+                            "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+                        },
+                        {
+                            "code": 1269883975,
+                            "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+                        },
+                        {
+                            "code": 1428504122,
+                            "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+                        },
+                        {
+                            "code": 1238108068,
+                            "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+                        },
+                        {
+                            "code": 1238108069,
+                            "message": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+                        }
+                    ]
+                },
+                "renderingOptions": [],
+                "validators": [
+                    {
+                        "identifier": "NotEmpty",
+                        "code": 1221560910,
+                        "errorMessage": "Bitte geben Sie Ihren Namen ein"
+                    },
+                    {
+                        "options": {
+                            "minimum": "2",
+                            "maximum": "40"
+                        },
+                        "identifier": "StringLength",
+                        "code": 1428504122,
+                        "errorMessage": "Der Name muss zwischen 2 und 40 Zeichen betragen"
+                    }
+                ],
+                "name": "tx_form_formframework[contact-19915][name]"
+            },
+            {
+                "defaultValue": "",
+                "type": "Email",
+                "identifier": "email",
+                "label": "Email",
+                "properties": {
+                    "fluidAdditionalAttributes": {
+                        "required": "required"
+                    },
+                    "validationErrorMessages": [
+                        {
+                            "code": 1221560910,
+                            "message": "Bitte geben Sie eine Email-Adresse ein"
+                        },
+                        {
+                            "code": 1221560718,
+                            "message": "Bitte geben Sie eine Email-Adresse ein"
+                        },
+                        {
+                            "code": 1347992400,
+                            "message": "Bitte geben Sie eine Email-Adresse ein"
+                        },
+                        {
+                            "code": 1347992453,
+                            "message": "Bitte geben Sie eine Email-Adresse ein"
+                        },
+                        {
+                            "code": 1221559976,
+                            "message": "Bitte geben Sie eine valide E-Mail Adresse an"
+                        }
+                    ]
+                },
+                "renderingOptions": [],
+                "validators": [
+                    {
+                        "identifier": "EmailAddress",
+                        "code": 1221559976,
+                        "errorMessage": "Bitte geben Sie eine valide E-Mail Adresse an"
+                    },
+                    {
+                        "identifier": "NotEmpty",
+                        "code": 1221560910,
+                        "errorMessage": "Bitte geben Sie eine Email-Adresse ein"
+                    }
+                ],
+                "name": "tx_form_formframework[contact-19915][email]"
+            },
+            {
+                "properties": {
+                    "options": {
+                        "1": "Kauf von Kauf von Konzertkarten",
+                        "2": "Konzertabonnement",
+                        "3": "Digital Concert Hall",
+                        "4": "Onlineshop",
+                        "5": "Archiv",
+                        "6": "Fundbüro",
+                        "7": "sonstiges"
+                    },
+                    "mails": {
+                        "1": "kartenbuero@berliner-philharmoniker.de",
+                        "2": "abo@berliner-philharmoniker.de",
+                        "3": "help@digitalconcerthall.com",
+                        "4": "onlineshop@berliner-philharmoniker.de",
+                        "5": "archiv@berliner-philharmoniker.de",
+                        "6": "fundbuero@berliner-philharmoniker.de",
+                        "7": "info@berliner-philharmoniker.de"
+                    },
+                    "elementDescription": "Betreff mit Mail",
+                    "fluidAdditionalAttributes": {
+                        "required": "required"
+                    },
+                    "validationErrorMessages": [
+                        {
+                            "code": 1221560910,
+                            "message": "Bitte wählen Sie einen Betreff aus"
+                        },
+                        {
+                            "code": 1221560718,
+                            "message": "Bitte wählen Sie einen Betreff aus"
+                        },
+                        {
+                            "code": 1347992400,
+                            "message": "Bitte wählen Sie einen Betreff aus"
+                        },
+                        {
+                            "code": 1347992453,
+                            "message": "Bitte wählen Sie einen Betreff aus"
+                        }
+                    ]
+                },
+                "type": "EmailSingleSelect",
+                "identifier": "contact-matter",
+                "label": "betrifft",
+                "renderingOptions": [],
+                "validators": [
+                    {
+                        "identifier": "NotEmpty",
+                        "code": 1221560910,
+                        "errorMessage": "Bitte wählen Sie einen Betreff aus"
+                    }
+                ],
+                "name": "tx_form_formframework[contact-19915][contact-matter]"
+            },
+            {
+                "defaultValue": "",
+                "type": "Textarea",
+                "identifier": "message",
+                "label": "Nachricht",
+                "properties": {
+                    "fluidAdditionalAttributes": {
+                        "required": "required",
+                        "placeholder": "Ihre Nachricht hier..."
+                    },
+                    "validationErrorMessages": [
+                        {
+                            "code": 1221560910,
+                            "message": "Bitte geben Sie Ihre Nachricht ein"
+                        },
+                        {
+                            "code": 1221560718,
+                            "message": "Bitte geben Sie Ihre Nachricht ein"
+                        },
+                        {
+                            "code": 1347992400,
+                            "message": "Bitte geben Sie Ihre Nachricht ein"
+                        },
+                        {
+                            "code": 1347992453,
+                            "message": "Bitte geben Sie Ihre Nachricht ein"
+                        }
+                    ]
+                },
+                "renderingOptions": [],
+                "validators": [
+                    {
+                        "identifier": "NotEmpty",
+                        "code": 1221560910,
+                        "errorMessage": "Bitte geben Sie Ihre Nachricht ein"
+                    }
+                ],
+                "name": "tx_form_formframework[contact-19915][message]"
+            },
+            {
+                "properties": {
+                    "width": "400",
+                    "height": 100,
+                    "fluidAdditionalAttributes": {
+                        "required": "required"
+                    },
+                    "validationErrorMessages": [
+                        {
+                            "code": 1221560910,
+                            "message": "Bitte geben Sie die Zeichen aus dem Bild ein"
+                        },
+                        {
+                            "code": 1221560718,
+                            "message": "Bitte geben Sie die Zeichen aus dem Bild ein"
+                        },
+                        {
+                            "code": 1347992400,
+                            "message": "Bitte geben Sie die Zeichen aus dem Bild ein"
+                        },
+                        {
+                            "code": 1347992453,
+                            "message": "Bitte geben Sie die Zeichen aus dem Bild ein"
+                        }
+                    ],
+                    "refreshText": "Neues Bild generieren",
+                    "disableJsonResponse": true,
+                    "gencaptchaUri": "/gencaptcha/?uid=19915&identifier=contact-19915"
+                },
+                "type": "Oncaptcha",
+                "identifier": "oncaptcha-1",
+                "label": "Bitte geben Sie den angezeigten Text an",
+                "validators": [
+                    {
+                        "identifier": "Oncaptcha",
+                        "code": 0,
+                        "errorMessage": 0
+                    },
+                    {
+                        "identifier": "NotEmpty",
+                        "code": 1221560910,
+                        "errorMessage": "Bitte geben Sie die Zeichen aus dem Bild ein"
+                    }
+                ],
+                "name": "tx_form_formframework[contact-19915][oncaptcha-1]"
+            },
+            {
+                "properties": {
+                    "fluidAdditionalAttributes": {
+                        "required": "required"
+                    },
+                    "validationErrorMessages": [
+                        {
+                            "code": 1221560910,
+                            "message": "Sie müssen die Datenschutzbestimmung akzeptieren"
+                        },
+                        {
+                            "code": 1221560718,
+                            "message": "Sie müssen die Datenschutzbestimmung akzeptieren"
+                        },
+                        {
+                            "code": 1347992400,
+                            "message": "Sie müssen die Datenschutzbestimmung akzeptieren"
+                        },
+                        {
+                            "code": 1347992453,
+                            "message": "Sie müssen die Datenschutzbestimmung akzeptieren"
+                        }
+                    ],
+                    "content": "<div> <p>Ich akzeptiere die <a href=\"/datenschutz/\">Datenschutzbestimmungen</a>.</p></div>"
+                },
+                "type": "Checkbox",
+                "identifier": "privacy-check",
+                "renderingOptions": [],
+                "validators": [
+                    {
+                        "identifier": "NotEmpty",
+                        "code": 1221560910,
+                        "errorMessage": "Sie müssen die Datenschutzbestimmung akzeptieren"
+                    }
+                ],
+                "name": "tx_form_formframework[contact-19915][privacy-check]"
+            },
+            {
+                "properties": {
+                    "containerClassAttribute": "input",
+                    "elementClassAttribute": "",
+                    "elementErrorClassAttribute": "error",
+                    "renderAsHiddenField": false,
+                    "styleAttribute": "position:absolute; margin:0 0 0 -999em;"
+                },
+                "type": "Honeypot",
+                "identifier": "Q9amTSCogRZ530HUzK8hYcG",
+                "label": "",
+                "name": "tx_form_formframework[contact-19915][Q9amTSCogRZ530HUzK8hYcG]"
+            },
+            {
+                "properties": [],
+                "type": "Hidden",
+                "identifier": "__currentPage",
+                "defaultValue": 1,
+                "label": "",
+                "name": "tx_form_formframework[contact-19915][__currentPage]"
+            },
+            {
+                "properties": [],
+                "type": "Hidden",
+                "identifier": "__trustedProperties",
+                "defaultValue": "{\"contact-19915\":{\"name\":1,\"email\":1,\"contact-matter\":1,\"message\":1,\"oncaptcha-1\":1,\"privacy-check\":1,\"Q9amTSCogRZ530HUzK8hYcG\":1,\"__currentPage\":1}}e15a129104de936a6f8618efc00cc3d5adca3d3c",
+                "label": "",
+                "name": "tx_form_formframework[contact-19915][__trustedProperties]"
+            },
+            {
+                "properties": [],
+                "type": "Hidden",
+                "identifier": "__state",
+                "defaultValue": "TzozOToiVFlQTzNcQ01TXEZvcm1cRG9tYWluXFJ1bnRpbWVcRm9ybVN0YXRlIjoyOntzOjI1OiIAKgBsYXN0RGlzcGxheWVkUGFnZUluZGV4IjtpOjA7czoxMzoiACoAZm9ybVZhbHVlcyI7YTowOnt9fQ==d48b984bc123981e8c4bdd84e0a06164d2ee0026",
+                "label": "",
+                "name": "tx_form_formframework[contact-19915][__state]"
+            }
+        ]
+}
+*/
