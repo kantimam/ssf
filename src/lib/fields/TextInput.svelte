@@ -11,6 +11,24 @@
   identfier={elementDefinition.identifier}
   let:inputValue
   let:onChange
+  let:inputError
 >
-  <input type="text" name="" id="" value={inputValue} on:change={onChange} />
+  <div class="text-input">
+    {#if elementDefinition.label}
+      <label for={elementDefinition.identifier}>
+        {elementDefinition.label}
+      </label>
+    {/if}
+    <div class="info-top">info top</div>
+    <input
+      type="text"
+      name={elementDefinition.name}
+      id={elementDefinition.identifier}
+      value={inputValue}
+      on:change={onChange}
+    />
+    {#if inputError?.message}
+      <div class="info-bottom">{inputError.message}</div>
+    {/if}
+  </div>
 </BaseInput>

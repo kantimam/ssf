@@ -4,7 +4,7 @@ export type ElementsMap=Record<string, typeof SvelteComponent>;
 
 export interface FormContext {
     inputValuesStore: SvelteStore<Record<string, unknown>>;
-    inputErrorsStore: SvelteStore<Record<string, unknown>>;
+    inputErrorsStore: SvelteStore<Record<string, InputError>>;
     setInputValue: (key: string, value: unknown)=>void;
     setInputError: (key: string, value: InputError)=>void;
 }
