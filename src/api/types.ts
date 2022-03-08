@@ -1,10 +1,11 @@
 import type { SvelteComponent } from "svelte";
+import type { Writable } from "svelte/store";
 
 export type ElementsMap=Record<string, typeof SvelteComponent>;
 
 export interface FormContext {
-    inputValuesStore: SvelteStore<Record<string, unknown>>;
-    inputErrorsStore: SvelteStore<Record<string, InputError>>;
+    inputValuesStore: Writable<Record<string, unknown>>;
+    inputErrorsStore: Writable<Record<string, InputError>>;
     setInputValue: (key: string, value: unknown)=>void;
     setInputError: (key: string, value: InputError)=>void;
 }

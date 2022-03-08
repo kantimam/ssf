@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ElementDefinition, ElementsMap } from "src/api/types";
+  import type { ElementDefinition, ElementsMap } from "../api/types";
 
   import FallbackField from "./FallbackField.svelte";
 

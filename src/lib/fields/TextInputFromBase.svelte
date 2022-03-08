@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ElementDefinition } from "src/api/types";
+  import type { ElementDefinition } from "../../api/types";
   import BaseInput from "../BaseInput.svelte";
   export let elementDefinition: ElementDefinition;
 </script>

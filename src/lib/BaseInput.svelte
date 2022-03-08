@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FormContext, InputError } from "src/api/types";
+  import type { FormContext, InputError } from "../api/types";
   import { getContext } from "svelte";
 
   export let identfier: string;
