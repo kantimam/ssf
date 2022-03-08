@@ -1,7 +1,7 @@
 import type { FormDefinitionTypo3 } from './api/types'
 import FormSchema from './SchemaForm.svelte';
-import TextInput from './lib/fields/TextInput.svelte';
 import formDefinitionData from './assets/formDefinition.json';
+import TextField from "./lib/fields/textfield/TextFieldSsf.svelte";
 
 const formDefinition: FormDefinitionTypo3=formDefinitionData;
 
@@ -10,8 +10,8 @@ const app = new FormSchema({
   props: {
     formSchema: formDefinition,
     elementsMap: {
-      Text: TextInput,
-      Email: TextInput,
+      Text: TextField,
+      Email: TextField,
 
     }
   }
